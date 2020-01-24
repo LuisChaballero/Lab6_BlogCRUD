@@ -5,7 +5,7 @@ function showComments(){
         dataType: "json",
         success: function (responseJSON){
             $('.comments').empty();
-            for(let i = 0; i<responseJSON.length; i++){
+            for(let i = 1; i<=responseJSON.length; i++){
                 $(".comments").append(`
                     <h3>${responseJSON[i].titulo}</h3>
                 
