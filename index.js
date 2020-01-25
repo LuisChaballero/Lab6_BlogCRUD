@@ -15,21 +15,21 @@ let comentarios = [{
     titulo: "Saludo",
     contenido: "Hola como estas",
     autor: "Alfredo",
-    fecha: new Date(2018,07,20) 
+    fecha: "2018-07-20" 
 },
 {
     id: uuidv4(),
     titulo: "Queja",
     contenido: "No me gusto. Talento desperdiciado",
     autor: "Erica",
-    fecha: new Date(2019,10,09) 
+    fecha: "2019-10-09" 
 },
 {
     id: uuidv4(),
     titulo: "Despedida",
     contenido: "Hasta luego",
     autor: "Diego",
-    fecha: new Date(2020,01,14) 
+    fecha: "2020-01-14"
 }];
 
  //GET /blog-api/comentarios
@@ -77,13 +77,22 @@ let comentarios = [{
          return res.status(406).send();
      }
      else{
+        //Current date
+        let today = new Date();
+        let day = today.getDate();
+        let mon = today.getMonth()+1; 
+        let year = today.getFullYear();
+        if(day<10) day='0'+day;
+        if(mon<10) mon='0'+mon;
+        let date = year+'-'+mon+'-'+day;
+
 
         let nuevoComentario = {
             id: uuidv4(),
             titulo: nuevoTitulo,
             contenido: nuevoContenido,
             autor: nuevoAutor,
-            fecha: new Date(2020,01,24) 
+            fecha: date
         };
         comentarios.push(nuevoComentario);
 
