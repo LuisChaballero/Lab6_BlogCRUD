@@ -12,26 +12,25 @@ uuidv4();
 
 let comentarios = [{
     id: uuidv4(),
-    titulo: "saludo",
-    contenido: "hola como estas",
+    titulo: "Saludo",
+    contenido: "Hola como estas",
     autor: "Alfredo",
-    fecha: "2018-07-20"
+    fecha: new Date(2018,07,20) 
 },
 {
     id: uuidv4(),
-    titulo: "queja",
-    contenido: "no me gusto esto",
+    titulo: "Queja",
+    contenido: "No me gusto. Talento desperdiciado",
     autor: "Erica",
-    fecha: "2019-10-09"
+    fecha: new Date(2019,10,09) 
 },
 {
     id: uuidv4(),
-    titulo: "despedida",
-    contenido: "hasta luego",
+    titulo: "Despedida",
+    contenido: "Hasta luego",
     autor: "Diego",
-    fecha: "2020-01-14"
+    fecha: new Date(2020,01,14) 
 }];
-
 
  //GET /blog-api/comentarios
  app.get( '/blog-api/comentarios', ( req, res )=>{
@@ -66,7 +65,107 @@ let comentarios = [{
  });
 
  //POST
- //app.put( '/blog-api/')
+ app.post( '/blog-api/nuevo-comentario', jsonParser, ( req, res) => {
+     console.log(req.body);
+
+     
+     let nuevoTitulo = req.body.titulo;
+     let nuevoContenido = req.body.contenido;
+     let nuevoAutor = req.body.autor;
+
+     if( nuevoAutor == "" || nuevoTitulo == "" || nuevoContenido == "" ){
+         res.statusMessage = "Datos incompletos";
+         return res.status(406).send();
+     }
+     else{
+
+        let nuevoComentario = {
+            id: uuidv4(),
+            titulo: nuevoTitulo,
+            contenido: nuevoContenido,
+            autor: nuevoAutor,
+            fecha: new Date(2020,01,24) 
+        };
+        comentarios.push(nuevoComentario);
+
+        res.statusMessage = "Comentario agregado"
+        return res.status(201).send(nuevoComentario);
+     }
+
+ });
+
+ //DELETE
+
+ app.delete( '/blog-api/remover-comentario/:id', ( req,res ) => {
+    let id = req.params.id;
+
+
+    let result = comentarios.find( (comentario) => {
+        if (comentario.id == id){
+            return comentario;
+
+        }
+    });
+    //console.log(result);
+
+    if (result){
+        comentarios.splice(comentarios.indexOf(result),1);
+        //res.statusMessage = "Comentario"
+        return res.status(200).send();
+    }
+    else{
+        res.statusMessage = "Comentario con ese id no encontrado"
+        return res.status(404).send();
+    }
+
+ });
+
+ app.put( '/blog-api/actualizar-comentario/:id', jsonParser, ( req, res) => {
+    let id = req.params.id;
+    let urlId = re.body.id;
+    let nuevoTitulo = req.body.titulo;
+    let nuevoContenido = req.body.contenido;
+    let nuevoAutor = req.body.autor;
+
+    if (nuevoId == ""){
+        res.statusMessage = "El id no fue proporcionado";
+        return res.status(406).send();
+
+    }
+    else if (urlId != id){
+        res.statusMessage = "El id no fue proporcionado";
+        return res.status(409).send();
+    }
+    else if ( nuevoAutor == "" || nuevoTitulo == "" || nuevoContenido == "" ){
+        res.statusMessage = "Datos incompletos";
+        return res.status(406).send();
+    }
+    else{
+        let result = comentarios.find( (comentario) => {
+            if (comentario.id == id){
+                return comentario;  
+            }
+        });
+
+        if(result){
+            let currIndex = comentarios.indexOf(result);
+
+            comentarios[currIndex].titulo = nuevoTitulo;
+            comentarios[currIndex].contenido = nuevoContenido;
+            comentarios[currIndex].autor = nuevoAutor;
+
+            return res.status(200).send(comentarios[currIndex]);
+        }
+        else{
+            res.statusMessage = "Comentario con ese id no encontrado";
+            return res.status(404).send();
+        }
+
+
+    }
+
+    
+ });
 
 
 app.listen( 8080, () =>{
