@@ -9,15 +9,53 @@
     <title>Blog</title>
 </head>
 <body>
-    <div class="header">
+    <header>
         <h1>Blog</h1>
-    </div>
+    </header>
+
     <section id="commentSection">
 
     </section>
-    <form class="commentCreation">
-        <label for=""><input type="submit" value="Add comment"></label>
+    <form class="commentFormat" id="commentCreation">
+        <h2>Agregar comentario</h2>
+        <div class="tituloFormat">
+            <label >Titulo: </label>
+            <input class="textTitulo"  type="text"></input>
+        </div>
+        <div class="contenidoFormat">
+            <label >Contenido: </label>
+            <textarea class="textContenido"  cols="30" rows="5"></textarea>
+        </div>
+        <div class="autorFormat">
+            <label >Autor: </label>
+            <input type="text" class="textAutor"  ></input>
+        </div>
+        <div>
+            <input type="submit" value="Agregar">
+        </div>
+    </form>
 
+    <form class="commentFormat" id="commentModification">
+        <h2>Modificar comentario</h2>
+        <div class="idFormat">
+            <label >Id: </label>
+            <input class="textId" id="idMod" type="text"></input>
+        </div>
+        <div class="tituloFormat">
+            <label >Titulo: </label>
+            <input class="textTitulo" id="tituloMod" type="text"></input>
+        </div>
+        <div class="contenidoFormat">
+            <label >Contenido: </label>
+            <textarea class="textContenido" id="contenidoMod"  cols="30" rows="5"></textarea>
+        </div>
+        <div class="autorFormat">
+            <label >Autor: </label>
+            <input type="text" class="autorTitulo" id="autorMod" ></input>
+        </div>
+        <div>
+            <input type="submit" value="Modificar">
+        </div>
     </form>
     <script src="./js/index.js" type="text/javascript"></script>
 </body>

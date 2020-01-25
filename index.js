@@ -34,7 +34,6 @@ let comentarios = [{
 
  //GET /blog-api/comentarios
  app.get( '/blog-api/comentarios', ( req, res )=>{
-    console.log("hola");
     return res.status( 200 ).json( comentarios );
  });
 
@@ -122,12 +121,12 @@ let comentarios = [{
 
  app.put( '/blog-api/actualizar-comentario/:id', jsonParser, ( req, res) => {
     let id = req.params.id;
-    let urlId = re.body.id;
+    let urlId = req.body.id;
     let nuevoTitulo = req.body.titulo;
     let nuevoContenido = req.body.contenido;
     let nuevoAutor = req.body.autor;
 
-    if (nuevoId == ""){
+    if (urlId == ""){
         res.statusMessage = "El id no fue proporcionado";
         return res.status(406).send();
 
@@ -141,30 +140,26 @@ let comentarios = [{
         return res.status(406).send();
     }
     else{
-        let result = comentarios.find( (comentario) => {
-            if (comentario.id == id){
-                return comentario;  
-            }
-        });
-
+            let result = comentarios.find( comentario => {
+                if (comentario.id == id){
+                    return comentario;  
+                }
+            });
+        
+        let currIndex = comentarios.indexOf(result);
         if(result){
-            let currIndex = comentarios.indexOf(result);
-
+        
             comentarios[currIndex].titulo = nuevoTitulo;
             comentarios[currIndex].contenido = nuevoContenido;
             comentarios[currIndex].autor = nuevoAutor;
 
-            return res.status(200).send(comentarios[currIndex]);
+            return res.status(202).send(comentarios[currIndex]);
         }
         else{
             res.statusMessage = "Comentario con ese id no encontrado";
             return res.status(404).send();
         }
-
-
-    }
-
-    
+    } 
  });
 
 

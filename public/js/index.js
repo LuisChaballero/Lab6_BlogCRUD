@@ -3,35 +3,30 @@ function showComments(){
         url: "/blog-api/comentarios",
         method: "GET",
         dataType: "json",
-        success: function (responseJSON){
+        success: response =>{    
             $('#commentSection').empty();
-            for(let i = 0; i<=responseJSON.length; i++){
+            response.forEach(comentario => {
                 $("#commentSection").append(`
                     <section class="commentFormat">
                         <div class="commentHeader">
-                            <h2>${responseJSON[i].autor}</h2>
+                            <h2>${comentario.autor}</h2>
                         </div>
                         <div class="commentTitle">
-                            <h3>${responseJSON[i].titulo}</h3>
+                            <h3>${comentario.titulo}</h3>
                         </div>
                         <div class="commentContent">
-                            <p>${responseJSON[i].contenido}</p>
+                            <p>${comentario.contenido}</p>
                         </div>
                         <div class="commentDate">
-                            <p>${responseJSON[i].fecha}</p>
+                            <p>${comentario.fecha}</p>
                         </div>
                         <div class="commentFooter">
-                            <p>${responseJSON[i].id}</p>
+                            <p>${comentario.id}</p>
                         </div>
                     </section>                
                 `);
-            }
-            /*responseJSON.each(function(comentario){
-                $(".comments").append(`
-                    <h3>${comentario.titulo}</h3>
-                
-                `);
-            }); */
+            });
+
         },
         error: function(err){
             console.log(err);
@@ -40,11 +35,68 @@ function showComments(){
 }
 
 function addComment(){
+    $('#commentCreation').on('submit', function(e){
+        
+        e.preventDefault();
 
-}
+        let titulo = $('.textTitulo').val();
+        let contenido = $('.textContenido').val();
+        let autor = $('.textAutor').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/blog-api/nuevo-comentario",
+            contentType: "application/json",
+            data: JSON.stringify({ titulo, contenido, autor }),
+            dataType: "json",
+            success: function(response) {
+              location.reload();
+            },
+            error: function ({status, errorMessage}) {
+                alert(`Error ${status}: ${errorMessage}`);
+            }
+          
+        });
+
+    });
+} 
+
+function modifyComment(){
+    $('#commentModification').on('submit', function(e){
+
+        e.preventDefault();
+
+        let id = $('#idMod').val();
+        let titulo = $('#tituloMod').val();
+        let contenido = $('#contenidoMod').val();
+        let autor = $('#autorMod').val();
+        
+        console.log("hola2");
+        $.ajax({
+            type: "PUT",
+            url: `/blog-api/actualizar-comentario/`+id,
+            contentType: "application/json",
+            data: JSON.stringify({id, titulo, contenido, autor }),
+            dataType: "json",
+            success: function(response) {
+                console.log("suc");
+              location.reload();
+            },
+            error: function ({status, errorMessage}) {
+                console.log("err");
+                alert(`Error ${status}: ${errorMessage}`);
+            }
+          
+        });
+        console.log("fin");
+
+    });
+} 
 
 function init(){
     showComments();
+    addComment();
+    modifyComment();
 }
 
 init();
