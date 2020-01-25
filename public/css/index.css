@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 
-#commentSection{
+.commentsF{
     display: flex;
     flex-direction: row;
     justify-content: center;
